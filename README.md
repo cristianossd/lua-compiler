@@ -1,5 +1,5 @@
-# Monga 99 Compiler
+# Lua Compiler
 
-You can see more details about the language [here](http://www.julianaimperial.com.br/lang.html).
+You can see more details about the language [here](http://www.lua.org/manual/5.1/pt/manual.html).
 
 Under constructionn ...
