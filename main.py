@@ -44,13 +44,28 @@ tokens = [
   'TWODOTS', 'THREEDOTS'
 ] + list(reserved.values())
 
+# Regular expressions rules
+def t_COMMENT(t):
+  r'--.*\n'
+  print "matched a comment"
+  pass
+  # Discarded comment
+
 def t_ID(t):
   r'[a-zA-Z_][a-zA-Z_0-9]*'
   t.type = reserved.get(t.value, 'ID')
   return t
 
+t_ignore = ' \t'
+
+def t_newline(t):
+  r'\n+'
+  t.lexer.lineno += len(t.value)
+
 def t_error(t):
+  print "Ilegal character '%s' at line %d" % (t.value[0], t.lexer.lineno)
   t.lexer.skip(1)
+
 
 filename = argv[1]
 
