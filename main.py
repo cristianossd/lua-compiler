@@ -26,7 +26,23 @@ reserved = {
 }
 
 # List of token names
-tokens = ['ID'] + list(reserved.values())
+tokens = [
+  'ID', 'NUMBER',
+  'CHAR', 'STRING',
+  'PLUS', 'MINUS',
+  'TIMES', 'DIVIDE',
+  'PERCENT', 'CIRCUMFLEX',
+  'SHARP', 'EQUAL',
+  'NOTEQUAL', 'LESSEQUAL',
+  'GREATEREQUAL', 'LESS',
+  'GREATER', 'ASSIGN',
+  'LPAREN', 'RPAREN',
+  'LCURLY', 'RCURLY',
+  'LSQUARE', 'RSQUARE'
+  'SEMICOLON', 'COLON',
+  'COMMA', 'DOT',
+  'TWODOTS', 'THREEDOTS'
+] + list(reserved.values())
 
 def t_ID(t):
   r'[a-zA-Z_][a-zA-Z_0-9]*'
