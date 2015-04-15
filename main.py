@@ -39,14 +39,14 @@ tokens = [
   'TWODOTS'   , 'THREEDOTS'
 ] + list(reserved.values())
 
-t_STRING        = r'(\'.+\')|(\".+\")'
+t_STRING        = r'(\'(.|\s|\\(a|b|f|n|r|t|v|\\|\"|\'))+\')|(\"(.|\s|\\(a|b|f|n|r|t|v|\\|\"|\'))+\")'
 t_PLUS          = r'\+'
 t_MINUS         = r'-'
 t_TIMES         = r'\*'
 t_DIVIDE        = r'/'
 t_PERCENT       = r'%'
 t_CIRCUMFLEX    = r'\^'
-t_SHARP         = r'#'
+t_SHARP         = r'\#'
 t_EQUAL         = r'=='
 t_NOTEQUAL      = r'~='
 t_LESSEQUAL     = r'<='
