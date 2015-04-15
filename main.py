@@ -39,7 +39,7 @@ tokens = [
   'TWODOTS'   , 'THREEDOTS'
 ] + list(reserved.values())
 
-t_STRING        = r'(\'(.|\s|\\(a|b|f|n|r|t|v|\\|\"|\'))+\')|(\"(.|\s|\\(a|b|f|n|r|t|v|\\|\"|\'))+\")'
+t_STRING        = r'(\"([^\\\n]|(\\.))*?\")|(\'([^\\\n]|(\\.))*?\')'
 t_PLUS          = r'\+'
 t_MINUS         = r'-'
 t_TIMES         = r'\*'
@@ -91,7 +91,7 @@ def t_newline(t):
   t.lexer.lineno += len(t.value)
 
 def t_error(t):
-  print "Ilegal character '%s' at line %d" % (t.value[0], t.lexer.lineno)
+  print "Ilegal character '%s' at line %d: " % (t.value[0], t.lexer.lineno)
   t.lexer.skip(1)
 
 

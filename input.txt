@@ -13,5 +13,5 @@ for i=1,3 do
       print(array[i][j])
    end
 end
-
-a = 'alo\n123"'
+?
+a = '\calo\n123"'
