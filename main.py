@@ -70,7 +70,6 @@ t_THREEDOTS     = r'\.\.\.'
 # Regular expressions rules
 def t_COMMENT(t):
   r'--.*\n'
-  print "matched a comment"
   pass
   # Discarded comment
 
