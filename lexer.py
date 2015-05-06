@@ -28,18 +28,19 @@ class Lexer(object):
 
   # List of token names
   tokens = [
-    'ID'        , 'NUMBER'      , 'STRING',
-    'PLUS'      , 'MINUS'       , 'TIMES',
-    'DIVIDE'    , 'PERCENT'     , 'CIRCUMFLEX',
-    'SHARP'     , 'EQUAL'       , 'NOTEQUAL',
-    'LESSEQUAL' , 'GREATEREQUAL', 'LESS',
-    'GREATER'   , 'ASSIGN'      , 'LPAREN',
-    'RPAREN'    , 'LCURLY'      , 'RCURLY',
-    'LSQUARE'   , 'RSQUARE'     , 'SEMICOLON',
-    'COLON'     , 'COMMA'       , 'DOT',
-    'TWODOTS'   , 'THREEDOTS'
+    'ID'        , 'NUMBER'      , 'CHAR',
+    'STRING'    , 'PLUS'        , 'MINUS',
+    'TIMES'     , 'DIVIDE'      , 'PERCENT',
+    'CIRCUMFLEX', 'SHARP'       , 'EQUAL',
+    'NOTEQUAL'  , 'LESSEQUAL'   , 'GREATEREQUAL',
+    'LESS'      , 'GREATER'     , 'ASSIGN',
+    'LPAREN'    , 'RPAREN'      , 'LCURLY',
+    'RCURLY'    , 'LSQUARE'     , 'RSQUARE',
+    'SEMICOLON' , 'COLON'       , 'COMMA',
+    'DOT'       , 'TWODOTS'     , 'THREEDOTS'
   ] + list(reserved.values())
 
+  t_CHAR          = r'(\"([^\\\n]|(\\.))?\")|(\'([^\\\n]|(\\.))?\')'
   t_STRING        = r'(\"([^\\\n]|(\\.))*?\")|(\'([^\\\n]|(\\.))*?\')'
   t_PLUS          = r'\+'
   t_MINUS         = r'-'
