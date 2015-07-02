@@ -4,10 +4,9 @@ This compiler are writing using an implementation of **lex** and **yacc** parsin
 
 ## Compiler Stages
 
-[x] Lexic
-[ ] Parser
-[ ] Semantic
-[ ] Code Generation
+- [x] Lexic
+- [ ] Parser
+- [ ] Code Generation
 
 ## Lua Reference 
 You can see more details about the language [here](http://www.lua.org/manual/5.1/pt/manual.html).
