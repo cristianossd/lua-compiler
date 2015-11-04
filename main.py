@@ -1,4 +1,5 @@
 import lexer
+import parser
 from sys import argv
 
 if __name__ == '__main__':
@@ -6,6 +7,12 @@ if __name__ == '__main__':
   f = open(filename)
   code = f.read()
 
+  # Building the lexer
   lex = lexer.Lexer()
   lex.build()
-  lex.test(code)
+  lex.lexer.input(code)
+
+  # Building the parser
+  parser = parser.Parser()
+  parser.build()
+  parser.parse(lex.lexer)

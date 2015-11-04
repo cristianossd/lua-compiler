@@ -144,3 +144,6 @@ class Parser(object):
             | NOT
             | SHARP'''
     pass
+
+  def build():
+    parser = yacc.yacc()
