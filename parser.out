@@ -1,0 +1,1352 @@
+Created by PLY version 3.4 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> block
+Rule 1     block -> blocklist
+Rule 2     blocklist -> empty
+Rule 3     blocklist -> blocklist command blockterminator
+Rule 4     blockterminator -> empty
+Rule 5     blockterminator -> SEMICOLON
+Rule 6     command -> ID ASSIGN exp
+Rule 7     command -> functioncall
+Rule 8     command -> vardeclaration
+Rule 9     command -> WHILE exp DO block END
+Rule 10    command -> IF exp THEN block elsestnt END
+Rule 11    elsestnt -> empty
+Rule 12    elsestnt -> ELSE block
+Rule 13    exp -> NUMBER
+Rule 14    exp -> ID
+Rule 15    exp -> functioncall
+Rule 16    exp -> exp binop exp
+Rule 17    exp -> unaryop exp
+Rule 18    exp -> LPAREN exp RPAREN
+Rule 19    functioncall -> ID LPAREN explist RPAREN
+Rule 20    vardeclaration -> VAR ID expassign
+Rule 21    expassign -> empty
+Rule 22    expassign -> ASSIGN exp
+Rule 23    explist -> empty
+Rule 24    explist -> lexp exp
+Rule 25    lexp -> empty
+Rule 26    lexp -> lexp exp COMMA
+Rule 27    binop -> PLUS
+Rule 28    binop -> MINUS
+Rule 29    binop -> TIMES
+Rule 30    binop -> DIVIDE
+Rule 31    binop -> LESS
+Rule 32    binop -> LESSEQUAL
+Rule 33    binop -> GREATER
+Rule 34    binop -> GREATEREQUAL
+Rule 35    binop -> EQUAL
+Rule 36    binop -> NOTEQUAL
+Rule 37    binop -> AND
+Rule 38    binop -> OR
+Rule 39    unaryop -> MINUS
+Rule 40    unaryop -> NOT
+Rule 41    empty -> <empty>
+
+Terminals, with rules where they appear
+
+AND                  : 37
+ASSIGN               : 6 22
+COMMA                : 26
+DIVIDE               : 30
+DO                   : 9
+ELSE                 : 12
+END                  : 9 10
+EQUAL                : 35
+GREATER              : 33
+GREATEREQUAL         : 34
+ID                   : 6 14 19 20
+IF                   : 10
+LESS                 : 31
+LESSEQUAL            : 32
+LPAREN               : 18 19
+MINUS                : 28 39
+NOT                  : 40
+NOTEQUAL             : 36
+NUMBER               : 13
+OR                   : 38
+PLUS                 : 27
+RPAREN               : 18 19
+SEMICOLON            : 5
+THEN                 : 10
+TIMES                : 29
+VAR                  : 20
+WHILE                : 9
+error                : 
+
+Nonterminals, with rules where they appear
+
+binop                : 16
+block                : 9 10 12 0
+blocklist            : 1 3
+blockterminator      : 3
+command              : 3
+elsestnt             : 10
+empty                : 2 4 11 21 23 25
+exp                  : 6 9 10 16 16 17 18 22 24 26
+expassign            : 20
+explist              : 19
+functioncall         : 7 15
+lexp                 : 24 26
+unaryop              : 17
+vardeclaration       : 8
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . block
+    (1) block -> . blocklist
+    (2) blocklist -> . empty
+    (3) blocklist -> . blocklist command blockterminator
+    (41) empty -> .
+
+    ID              reduce using rule 41 (empty -> .)
+    WHILE           reduce using rule 41 (empty -> .)
+    IF              reduce using rule 41 (empty -> .)
+    VAR             reduce using rule 41 (empty -> .)
+    $end            reduce using rule 41 (empty -> .)
+
+    empty                          shift and go to state 1
+    blocklist                      shift and go to state 2
+    block                          shift and go to state 3
+
+state 1
+
+    (2) blocklist -> empty .
+
+    ID              reduce using rule 2 (blocklist -> empty .)
+    WHILE           reduce using rule 2 (blocklist -> empty .)
+    IF              reduce using rule 2 (blocklist -> empty .)
+    VAR             reduce using rule 2 (blocklist -> empty .)
+    END             reduce using rule 2 (blocklist -> empty .)
+    ELSE            reduce using rule 2 (blocklist -> empty .)
+    $end            reduce using rule 2 (blocklist -> empty .)
+
+
+state 2
+
+    (1) block -> blocklist .
+    (3) blocklist -> blocklist . command blockterminator
+    (6) command -> . ID ASSIGN exp
+    (7) command -> . functioncall
+    (8) command -> . vardeclaration
+    (9) command -> . WHILE exp DO block END
+    (10) command -> . IF exp THEN block elsestnt END
+    (19) functioncall -> . ID LPAREN explist RPAREN
+    (20) vardeclaration -> . VAR ID expassign
+
+    END             reduce using rule 1 (block -> blocklist .)
+    ELSE            reduce using rule 1 (block -> blocklist .)
+    $end            reduce using rule 1 (block -> blocklist .)
+    ID              shift and go to state 9
+    WHILE           shift and go to state 6
+    IF              shift and go to state 10
+    VAR             shift and go to state 5
+
+    vardeclaration                 shift and go to state 4
+    functioncall                   shift and go to state 8
+    command                        shift and go to state 7
+
+state 3
+
+    (0) S' -> block .
+
+
+
+state 4
+
+    (8) command -> vardeclaration .
+
+    SEMICOLON       reduce using rule 8 (command -> vardeclaration .)
+    ID              reduce using rule 8 (command -> vardeclaration .)
+    WHILE           reduce using rule 8 (command -> vardeclaration .)
+    IF              reduce using rule 8 (command -> vardeclaration .)
+    VAR             reduce using rule 8 (command -> vardeclaration .)
+    $end            reduce using rule 8 (command -> vardeclaration .)
+    END             reduce using rule 8 (command -> vardeclaration .)
+    ELSE            reduce using rule 8 (command -> vardeclaration .)
+
+
+state 5
+
+    (20) vardeclaration -> VAR . ID expassign
+
+    ID              shift and go to state 11
+
+
+state 6
+
+    (9) command -> WHILE . exp DO block END
+    (13) exp -> . NUMBER
+    (14) exp -> . ID
+    (15) exp -> . functioncall
+    (16) exp -> . exp binop exp
+    (17) exp -> . unaryop exp
+    (18) exp -> . LPAREN exp RPAREN
+    (19) functioncall -> . ID LPAREN explist RPAREN
+    (39) unaryop -> . MINUS
+    (40) unaryop -> . NOT
+
+    NUMBER          shift and go to state 14
+    ID              shift and go to state 19
+    LPAREN          shift and go to state 12
+    MINUS           shift and go to state 15
+    NOT             shift and go to state 18
+
+    unaryop                        shift and go to state 13
+    functioncall                   shift and go to state 16
+    exp                            shift and go to state 17
+
+state 7
+
+    (3) blocklist -> blocklist command . blockterminator
+    (4) blockterminator -> . empty
+    (5) blockterminator -> . SEMICOLON
+    (41) empty -> .
+
+    SEMICOLON       shift and go to state 20
+    ID              reduce using rule 41 (empty -> .)
+    WHILE           reduce using rule 41 (empty -> .)
+    IF              reduce using rule 41 (empty -> .)
+    VAR             reduce using rule 41 (empty -> .)
+    $end            reduce using rule 41 (empty -> .)
+    END             reduce using rule 41 (empty -> .)
+    ELSE            reduce using rule 41 (empty -> .)
+
+    blockterminator                shift and go to state 21
+    empty                          shift and go to state 22
+
+state 8
+
+    (7) command -> functioncall .
+
+    SEMICOLON       reduce using rule 7 (command -> functioncall .)
+    ID              reduce using rule 7 (command -> functioncall .)
+    WHILE           reduce using rule 7 (command -> functioncall .)
+    IF              reduce using rule 7 (command -> functioncall .)
+    VAR             reduce using rule 7 (command -> functioncall .)
+    $end            reduce using rule 7 (command -> functioncall .)
+    END             reduce using rule 7 (command -> functioncall .)
+    ELSE            reduce using rule 7 (command -> functioncall .)
+
+
+state 9
+
+    (6) command -> ID . ASSIGN exp
+    (19) functioncall -> ID . LPAREN explist RPAREN
+
+    ASSIGN          shift and go to state 23
+    LPAREN          shift and go to state 24
+
+
+state 10
+
+    (10) command -> IF . exp THEN block elsestnt END
+    (13) exp -> . NUMBER
+    (14) exp -> . ID
+    (15) exp -> . functioncall
+    (16) exp -> . exp binop exp
+    (17) exp -> . unaryop exp
+    (18) exp -> . LPAREN exp RPAREN
+    (19) functioncall -> . ID LPAREN explist RPAREN
+    (39) unaryop -> . MINUS
+    (40) unaryop -> . NOT
+
+    NUMBER          shift and go to state 14
+    ID              shift and go to state 19
+    LPAREN          shift and go to state 12
+    MINUS           shift and go to state 15
+    NOT             shift and go to state 18
+
+    unaryop                        shift and go to state 13
+    functioncall                   shift and go to state 16
+    exp                            shift and go to state 25
+
+state 11
+
+    (20) vardeclaration -> VAR ID . expassign
+    (21) expassign -> . empty
+    (22) expassign -> . ASSIGN exp
+    (41) empty -> .
+
+    ASSIGN          shift and go to state 26
+    SEMICOLON       reduce using rule 41 (empty -> .)
+    ID              reduce using rule 41 (empty -> .)
+    WHILE           reduce using rule 41 (empty -> .)
+    IF              reduce using rule 41 (empty -> .)
+    VAR             reduce using rule 41 (empty -> .)
+    $end            reduce using rule 41 (empty -> .)
+    END             reduce using rule 41 (empty -> .)
+    ELSE            reduce using rule 41 (empty -> .)
+
+    expassign                      shift and go to state 27
+    empty                          shift and go to state 28
+
+state 12
+
+    (18) exp -> LPAREN . exp RPAREN
+    (13) exp -> . NUMBER
+    (14) exp -> . ID
+    (15) exp -> . functioncall
+    (16) exp -> . exp binop exp
+    (17) exp -> . unaryop exp
+    (18) exp -> . LPAREN exp RPAREN
+    (19) functioncall -> . ID LPAREN explist RPAREN
+    (39) unaryop -> . MINUS
+    (40) unaryop -> . NOT
+
+    NUMBER          shift and go to state 14
+    ID              shift and go to state 19
+    LPAREN          shift and go to state 12
+    MINUS           shift and go to state 15
+    NOT             shift and go to state 18
+
+    unaryop                        shift and go to state 13
+    functioncall                   shift and go to state 16
+    exp                            shift and go to state 29
+
+state 13
+
+    (17) exp -> unaryop . exp
+    (13) exp -> . NUMBER
+    (14) exp -> . ID
+    (15) exp -> . functioncall
+    (16) exp -> . exp binop exp
+    (17) exp -> . unaryop exp
+    (18) exp -> . LPAREN exp RPAREN
+    (19) functioncall -> . ID LPAREN explist RPAREN
+    (39) unaryop -> . MINUS
+    (40) unaryop -> . NOT
+
+    NUMBER          shift and go to state 14
+    ID              shift and go to state 19
+    LPAREN          shift and go to state 12
+    MINUS           shift and go to state 15
+    NOT             shift and go to state 18
+
+    functioncall                   shift and go to state 16
+    exp                            shift and go to state 30
+    unaryop                        shift and go to state 13
+
+state 14
+
+    (13) exp -> NUMBER .
+
+    PLUS            reduce using rule 13 (exp -> NUMBER .)
+    MINUS           reduce using rule 13 (exp -> NUMBER .)
+    TIMES           reduce using rule 13 (exp -> NUMBER .)
+    DIVIDE          reduce using rule 13 (exp -> NUMBER .)
+    LESS            reduce using rule 13 (exp -> NUMBER .)
+    LESSEQUAL       reduce using rule 13 (exp -> NUMBER .)
+    GREATER         reduce using rule 13 (exp -> NUMBER .)
+    GREATEREQUAL    reduce using rule 13 (exp -> NUMBER .)
+    EQUAL           reduce using rule 13 (exp -> NUMBER .)
+    NOTEQUAL        reduce using rule 13 (exp -> NUMBER .)
+    AND             reduce using rule 13 (exp -> NUMBER .)
+    OR              reduce using rule 13 (exp -> NUMBER .)
+    SEMICOLON       reduce using rule 13 (exp -> NUMBER .)
+    ID              reduce using rule 13 (exp -> NUMBER .)
+    WHILE           reduce using rule 13 (exp -> NUMBER .)
+    IF              reduce using rule 13 (exp -> NUMBER .)
+    VAR             reduce using rule 13 (exp -> NUMBER .)
+    $end            reduce using rule 13 (exp -> NUMBER .)
+    END             reduce using rule 13 (exp -> NUMBER .)
+    ELSE            reduce using rule 13 (exp -> NUMBER .)
+    THEN            reduce using rule 13 (exp -> NUMBER .)
+    COMMA           reduce using rule 13 (exp -> NUMBER .)
+    RPAREN          reduce using rule 13 (exp -> NUMBER .)
+    DO              reduce using rule 13 (exp -> NUMBER .)
+
+
+state 15
+
+    (39) unaryop -> MINUS .
+
+    NUMBER          reduce using rule 39 (unaryop -> MINUS .)
+    ID              reduce using rule 39 (unaryop -> MINUS .)
+    LPAREN          reduce using rule 39 (unaryop -> MINUS .)
+    MINUS           reduce using rule 39 (unaryop -> MINUS .)
+    NOT             reduce using rule 39 (unaryop -> MINUS .)
+
+
+state 16
+
+    (15) exp -> functioncall .
+
+    PLUS            reduce using rule 15 (exp -> functioncall .)
+    MINUS           reduce using rule 15 (exp -> functioncall .)
+    TIMES           reduce using rule 15 (exp -> functioncall .)
+    DIVIDE          reduce using rule 15 (exp -> functioncall .)
+    LESS            reduce using rule 15 (exp -> functioncall .)
+    LESSEQUAL       reduce using rule 15 (exp -> functioncall .)
+    GREATER         reduce using rule 15 (exp -> functioncall .)
+    GREATEREQUAL    reduce using rule 15 (exp -> functioncall .)
+    EQUAL           reduce using rule 15 (exp -> functioncall .)
+    NOTEQUAL        reduce using rule 15 (exp -> functioncall .)
+    AND             reduce using rule 15 (exp -> functioncall .)
+    OR              reduce using rule 15 (exp -> functioncall .)
+    SEMICOLON       reduce using rule 15 (exp -> functioncall .)
+    ID              reduce using rule 15 (exp -> functioncall .)
+    WHILE           reduce using rule 15 (exp -> functioncall .)
+    IF              reduce using rule 15 (exp -> functioncall .)
+    VAR             reduce using rule 15 (exp -> functioncall .)
+    $end            reduce using rule 15 (exp -> functioncall .)
+    END             reduce using rule 15 (exp -> functioncall .)
+    ELSE            reduce using rule 15 (exp -> functioncall .)
+    THEN            reduce using rule 15 (exp -> functioncall .)
+    COMMA           reduce using rule 15 (exp -> functioncall .)
+    RPAREN          reduce using rule 15 (exp -> functioncall .)
+    DO              reduce using rule 15 (exp -> functioncall .)
+
+
+state 17
+
+    (9) command -> WHILE exp . DO block END
+    (16) exp -> exp . binop exp
+    (27) binop -> . PLUS
+    (28) binop -> . MINUS
+    (29) binop -> . TIMES
+    (30) binop -> . DIVIDE
+    (31) binop -> . LESS
+    (32) binop -> . LESSEQUAL
+    (33) binop -> . GREATER
+    (34) binop -> . GREATEREQUAL
+    (35) binop -> . EQUAL
+    (36) binop -> . NOTEQUAL
+    (37) binop -> . AND
+    (38) binop -> . OR
+
+    DO              shift and go to state 32
+    PLUS            shift and go to state 40
+    MINUS           shift and go to state 43
+    TIMES           shift and go to state 39
+    DIVIDE          shift and go to state 34
+    LESS            shift and go to state 36
+    LESSEQUAL       shift and go to state 41
+    GREATER         shift and go to state 44
+    GREATEREQUAL    shift and go to state 33
+    EQUAL           shift and go to state 37
+    NOTEQUAL        shift and go to state 42
+    AND             shift and go to state 31
+    OR              shift and go to state 38
+
+    binop                          shift and go to state 35
+
+state 18
+
+    (40) unaryop -> NOT .
+
+    NUMBER          reduce using rule 40 (unaryop -> NOT .)
+    ID              reduce using rule 40 (unaryop -> NOT .)
+    LPAREN          reduce using rule 40 (unaryop -> NOT .)
+    MINUS           reduce using rule 40 (unaryop -> NOT .)
+    NOT             reduce using rule 40 (unaryop -> NOT .)
+
+
+state 19
+
+    (14) exp -> ID .
+    (19) functioncall -> ID . LPAREN explist RPAREN
+
+    PLUS            reduce using rule 14 (exp -> ID .)
+    MINUS           reduce using rule 14 (exp -> ID .)
+    TIMES           reduce using rule 14 (exp -> ID .)
+    DIVIDE          reduce using rule 14 (exp -> ID .)
+    LESS            reduce using rule 14 (exp -> ID .)
+    LESSEQUAL       reduce using rule 14 (exp -> ID .)
+    GREATER         reduce using rule 14 (exp -> ID .)
+    GREATEREQUAL    reduce using rule 14 (exp -> ID .)
+    EQUAL           reduce using rule 14 (exp -> ID .)
+    NOTEQUAL        reduce using rule 14 (exp -> ID .)
+    AND             reduce using rule 14 (exp -> ID .)
+    OR              reduce using rule 14 (exp -> ID .)
+    SEMICOLON       reduce using rule 14 (exp -> ID .)
+    ID              reduce using rule 14 (exp -> ID .)
+    WHILE           reduce using rule 14 (exp -> ID .)
+    IF              reduce using rule 14 (exp -> ID .)
+    VAR             reduce using rule 14 (exp -> ID .)
+    $end            reduce using rule 14 (exp -> ID .)
+    END             reduce using rule 14 (exp -> ID .)
+    ELSE            reduce using rule 14 (exp -> ID .)
+    THEN            reduce using rule 14 (exp -> ID .)
+    COMMA           reduce using rule 14 (exp -> ID .)
+    RPAREN          reduce using rule 14 (exp -> ID .)
+    DO              reduce using rule 14 (exp -> ID .)
+    LPAREN          shift and go to state 24
+
+
+state 20
+
+    (5) blockterminator -> SEMICOLON .
+
+    ID              reduce using rule 5 (blockterminator -> SEMICOLON .)
+    WHILE           reduce using rule 5 (blockterminator -> SEMICOLON .)
+    IF              reduce using rule 5 (blockterminator -> SEMICOLON .)
+    VAR             reduce using rule 5 (blockterminator -> SEMICOLON .)
+    $end            reduce using rule 5 (blockterminator -> SEMICOLON .)
+    END             reduce using rule 5 (blockterminator -> SEMICOLON .)
+    ELSE            reduce using rule 5 (blockterminator -> SEMICOLON .)
+
+
+state 21
+
+    (3) blocklist -> blocklist command blockterminator .
+
+    ID              reduce using rule 3 (blocklist -> blocklist command blockterminator .)
+    WHILE           reduce using rule 3 (blocklist -> blocklist command blockterminator .)
+    IF              reduce using rule 3 (blocklist -> blocklist command blockterminator .)
+    VAR             reduce using rule 3 (blocklist -> blocklist command blockterminator .)
+    END             reduce using rule 3 (blocklist -> blocklist command blockterminator .)
+    ELSE            reduce using rule 3 (blocklist -> blocklist command blockterminator .)
+    $end            reduce using rule 3 (blocklist -> blocklist command blockterminator .)
+
+
+state 22
+
+    (4) blockterminator -> empty .
+
+    ID              reduce using rule 4 (blockterminator -> empty .)
+    WHILE           reduce using rule 4 (blockterminator -> empty .)
+    IF              reduce using rule 4 (blockterminator -> empty .)
+    VAR             reduce using rule 4 (blockterminator -> empty .)
+    $end            reduce using rule 4 (blockterminator -> empty .)
+    END             reduce using rule 4 (blockterminator -> empty .)
+    ELSE            reduce using rule 4 (blockterminator -> empty .)
+
+
+state 23
+
+    (6) command -> ID ASSIGN . exp
+    (13) exp -> . NUMBER
+    (14) exp -> . ID
+    (15) exp -> . functioncall
+    (16) exp -> . exp binop exp
+    (17) exp -> . unaryop exp
+    (18) exp -> . LPAREN exp RPAREN
+    (19) functioncall -> . ID LPAREN explist RPAREN
+    (39) unaryop -> . MINUS
+    (40) unaryop -> . NOT
+
+    NUMBER          shift and go to state 14
+    ID              shift and go to state 19
+    LPAREN          shift and go to state 12
+    MINUS           shift and go to state 15
+    NOT             shift and go to state 18
+
+    unaryop                        shift and go to state 13
+    functioncall                   shift and go to state 16
+    exp                            shift and go to state 45
+
+state 24
+
+    (19) functioncall -> ID LPAREN . explist RPAREN
+    (23) explist -> . empty
+    (24) explist -> . lexp exp
+    (41) empty -> .
+    (25) lexp -> . empty
+    (26) lexp -> . lexp exp COMMA
+
+    RPAREN          reduce using rule 41 (empty -> .)
+    NUMBER          reduce using rule 41 (empty -> .)
+    ID              reduce using rule 41 (empty -> .)
+    LPAREN          reduce using rule 41 (empty -> .)
+    MINUS           reduce using rule 41 (empty -> .)
+    NOT             reduce using rule 41 (empty -> .)
+
+    explist                        shift and go to state 47
+    lexp                           shift and go to state 46
+    empty                          shift and go to state 48
+
+state 25
+
+    (10) command -> IF exp . THEN block elsestnt END
+    (16) exp -> exp . binop exp
+    (27) binop -> . PLUS
+    (28) binop -> . MINUS
+    (29) binop -> . TIMES
+    (30) binop -> . DIVIDE
+    (31) binop -> . LESS
+    (32) binop -> . LESSEQUAL
+    (33) binop -> . GREATER
+    (34) binop -> . GREATEREQUAL
+    (35) binop -> . EQUAL
+    (36) binop -> . NOTEQUAL
+    (37) binop -> . AND
+    (38) binop -> . OR
+
+    THEN            shift and go to state 49
+    PLUS            shift and go to state 40
+    MINUS           shift and go to state 43
+    TIMES           shift and go to state 39
+    DIVIDE          shift and go to state 34
+    LESS            shift and go to state 36
+    LESSEQUAL       shift and go to state 41
+    GREATER         shift and go to state 44
+    GREATEREQUAL    shift and go to state 33
+    EQUAL           shift and go to state 37
+    NOTEQUAL        shift and go to state 42
+    AND             shift and go to state 31
+    OR              shift and go to state 38
+
+    binop                          shift and go to state 35
+
+state 26
+
+    (22) expassign -> ASSIGN . exp
+    (13) exp -> . NUMBER
+    (14) exp -> . ID
+    (15) exp -> . functioncall
+    (16) exp -> . exp binop exp
+    (17) exp -> . unaryop exp
+    (18) exp -> . LPAREN exp RPAREN
+    (19) functioncall -> . ID LPAREN explist RPAREN
+    (39) unaryop -> . MINUS
+    (40) unaryop -> . NOT
+
+    NUMBER          shift and go to state 14
+    ID              shift and go to state 19
+    LPAREN          shift and go to state 12
+    MINUS           shift and go to state 15
+    NOT             shift and go to state 18
+
+    unaryop                        shift and go to state 13
+    functioncall                   shift and go to state 16
+    exp                            shift and go to state 50
+
+state 27
+
+    (20) vardeclaration -> VAR ID expassign .
+
+    SEMICOLON       reduce using rule 20 (vardeclaration -> VAR ID expassign .)
+    ID              reduce using rule 20 (vardeclaration -> VAR ID expassign .)
+    WHILE           reduce using rule 20 (vardeclaration -> VAR ID expassign .)
+    IF              reduce using rule 20 (vardeclaration -> VAR ID expassign .)
+    VAR             reduce using rule 20 (vardeclaration -> VAR ID expassign .)
+    $end            reduce using rule 20 (vardeclaration -> VAR ID expassign .)
+    END             reduce using rule 20 (vardeclaration -> VAR ID expassign .)
+    ELSE            reduce using rule 20 (vardeclaration -> VAR ID expassign .)
+
+
+state 28
+
+    (21) expassign -> empty .
+
+    SEMICOLON       reduce using rule 21 (expassign -> empty .)
+    ID              reduce using rule 21 (expassign -> empty .)
+    WHILE           reduce using rule 21 (expassign -> empty .)
+    IF              reduce using rule 21 (expassign -> empty .)
+    VAR             reduce using rule 21 (expassign -> empty .)
+    $end            reduce using rule 21 (expassign -> empty .)
+    END             reduce using rule 21 (expassign -> empty .)
+    ELSE            reduce using rule 21 (expassign -> empty .)
+
+
+state 29
+
+    (18) exp -> LPAREN exp . RPAREN
+    (16) exp -> exp . binop exp
+    (27) binop -> . PLUS
+    (28) binop -> . MINUS
+    (29) binop -> . TIMES
+    (30) binop -> . DIVIDE
+    (31) binop -> . LESS
+    (32) binop -> . LESSEQUAL
+    (33) binop -> . GREATER
+    (34) binop -> . GREATEREQUAL
+    (35) binop -> . EQUAL
+    (36) binop -> . NOTEQUAL
+    (37) binop -> . AND
+    (38) binop -> . OR
+
+    RPAREN          shift and go to state 51
+    PLUS            shift and go to state 40
+    MINUS           shift and go to state 43
+    TIMES           shift and go to state 39
+    DIVIDE          shift and go to state 34
+    LESS            shift and go to state 36
+    LESSEQUAL       shift and go to state 41
+    GREATER         shift and go to state 44
+    GREATEREQUAL    shift and go to state 33
+    EQUAL           shift and go to state 37
+    NOTEQUAL        shift and go to state 42
+    AND             shift and go to state 31
+    OR              shift and go to state 38
+
+    binop                          shift and go to state 35
+
+state 30
+
+    (17) exp -> unaryop exp .
+    (16) exp -> exp . binop exp
+    (27) binop -> . PLUS
+    (28) binop -> . MINUS
+    (29) binop -> . TIMES
+    (30) binop -> . DIVIDE
+    (31) binop -> . LESS
+    (32) binop -> . LESSEQUAL
+    (33) binop -> . GREATER
+    (34) binop -> . GREATEREQUAL
+    (35) binop -> . EQUAL
+    (36) binop -> . NOTEQUAL
+    (37) binop -> . AND
+    (38) binop -> . OR
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+  ! shift/reduce conflict for LESS resolved as shift
+  ! shift/reduce conflict for LESSEQUAL resolved as shift
+  ! shift/reduce conflict for GREATER resolved as shift
+  ! shift/reduce conflict for GREATEREQUAL resolved as shift
+  ! shift/reduce conflict for EQUAL resolved as shift
+  ! shift/reduce conflict for NOTEQUAL resolved as shift
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    SEMICOLON       reduce using rule 17 (exp -> unaryop exp .)
+    ID              reduce using rule 17 (exp -> unaryop exp .)
+    WHILE           reduce using rule 17 (exp -> unaryop exp .)
+    IF              reduce using rule 17 (exp -> unaryop exp .)
+    VAR             reduce using rule 17 (exp -> unaryop exp .)
+    $end            reduce using rule 17 (exp -> unaryop exp .)
+    END             reduce using rule 17 (exp -> unaryop exp .)
+    ELSE            reduce using rule 17 (exp -> unaryop exp .)
+    THEN            reduce using rule 17 (exp -> unaryop exp .)
+    COMMA           reduce using rule 17 (exp -> unaryop exp .)
+    RPAREN          reduce using rule 17 (exp -> unaryop exp .)
+    DO              reduce using rule 17 (exp -> unaryop exp .)
+    PLUS            shift and go to state 40
+    MINUS           shift and go to state 43
+    TIMES           shift and go to state 39
+    DIVIDE          shift and go to state 34
+    LESS            shift and go to state 36
+    LESSEQUAL       shift and go to state 41
+    GREATER         shift and go to state 44
+    GREATEREQUAL    shift and go to state 33
+    EQUAL           shift and go to state 37
+    NOTEQUAL        shift and go to state 42
+    AND             shift and go to state 31
+    OR              shift and go to state 38
+
+  ! PLUS            [ reduce using rule 17 (exp -> unaryop exp .) ]
+  ! MINUS           [ reduce using rule 17 (exp -> unaryop exp .) ]
+  ! TIMES           [ reduce using rule 17 (exp -> unaryop exp .) ]
+  ! DIVIDE          [ reduce using rule 17 (exp -> unaryop exp .) ]
+  ! LESS            [ reduce using rule 17 (exp -> unaryop exp .) ]
+  ! LESSEQUAL       [ reduce using rule 17 (exp -> unaryop exp .) ]
+  ! GREATER         [ reduce using rule 17 (exp -> unaryop exp .) ]
+  ! GREATEREQUAL    [ reduce using rule 17 (exp -> unaryop exp .) ]
+  ! EQUAL           [ reduce using rule 17 (exp -> unaryop exp .) ]
+  ! NOTEQUAL        [ reduce using rule 17 (exp -> unaryop exp .) ]
+  ! AND             [ reduce using rule 17 (exp -> unaryop exp .) ]
+  ! OR              [ reduce using rule 17 (exp -> unaryop exp .) ]
+
+    binop                          shift and go to state 35
+
+state 31
+
+    (37) binop -> AND .
+
+    NUMBER          reduce using rule 37 (binop -> AND .)
+    ID              reduce using rule 37 (binop -> AND .)
+    LPAREN          reduce using rule 37 (binop -> AND .)
+    MINUS           reduce using rule 37 (binop -> AND .)
+    NOT             reduce using rule 37 (binop -> AND .)
+
+
+state 32
+
+    (9) command -> WHILE exp DO . block END
+    (1) block -> . blocklist
+    (2) blocklist -> . empty
+    (3) blocklist -> . blocklist command blockterminator
+    (41) empty -> .
+
+    ID              reduce using rule 41 (empty -> .)
+    WHILE           reduce using rule 41 (empty -> .)
+    IF              reduce using rule 41 (empty -> .)
+    VAR             reduce using rule 41 (empty -> .)
+    END             reduce using rule 41 (empty -> .)
+
+    blocklist                      shift and go to state 2
+    block                          shift and go to state 52
+    empty                          shift and go to state 1
+
+state 33
+
+    (34) binop -> GREATEREQUAL .
+
+    NUMBER          reduce using rule 34 (binop -> GREATEREQUAL .)
+    ID              reduce using rule 34 (binop -> GREATEREQUAL .)
+    LPAREN          reduce using rule 34 (binop -> GREATEREQUAL .)
+    MINUS           reduce using rule 34 (binop -> GREATEREQUAL .)
+    NOT             reduce using rule 34 (binop -> GREATEREQUAL .)
+
+
+state 34
+
+    (30) binop -> DIVIDE .
+
+    NUMBER          reduce using rule 30 (binop -> DIVIDE .)
+    ID              reduce using rule 30 (binop -> DIVIDE .)
+    LPAREN          reduce using rule 30 (binop -> DIVIDE .)
+    MINUS           reduce using rule 30 (binop -> DIVIDE .)
+    NOT             reduce using rule 30 (binop -> DIVIDE .)
+
+
+state 35
+
+    (16) exp -> exp binop . exp
+    (13) exp -> . NUMBER
+    (14) exp -> . ID
+    (15) exp -> . functioncall
+    (16) exp -> . exp binop exp
+    (17) exp -> . unaryop exp
+    (18) exp -> . LPAREN exp RPAREN
+    (19) functioncall -> . ID LPAREN explist RPAREN
+    (39) unaryop -> . MINUS
+    (40) unaryop -> . NOT
+
+    NUMBER          shift and go to state 14
+    ID              shift and go to state 19
+    LPAREN          shift and go to state 12
+    MINUS           shift and go to state 15
+    NOT             shift and go to state 18
+
+    unaryop                        shift and go to state 13
+    functioncall                   shift and go to state 16
+    exp                            shift and go to state 53
+
+state 36
+
+    (31) binop -> LESS .
+
+    NUMBER          reduce using rule 31 (binop -> LESS .)
+    ID              reduce using rule 31 (binop -> LESS .)
+    LPAREN          reduce using rule 31 (binop -> LESS .)
+    MINUS           reduce using rule 31 (binop -> LESS .)
+    NOT             reduce using rule 31 (binop -> LESS .)
+
+
+state 37
+
+    (35) binop -> EQUAL .
+
+    NUMBER          reduce using rule 35 (binop -> EQUAL .)
+    ID              reduce using rule 35 (binop -> EQUAL .)
+    LPAREN          reduce using rule 35 (binop -> EQUAL .)
+    MINUS           reduce using rule 35 (binop -> EQUAL .)
+    NOT             reduce using rule 35 (binop -> EQUAL .)
+
+
+state 38
+
+    (38) binop -> OR .
+
+    NUMBER          reduce using rule 38 (binop -> OR .)
+    ID              reduce using rule 38 (binop -> OR .)
+    LPAREN          reduce using rule 38 (binop -> OR .)
+    MINUS           reduce using rule 38 (binop -> OR .)
+    NOT             reduce using rule 38 (binop -> OR .)
+
+
+state 39
+
+    (29) binop -> TIMES .
+
+    NUMBER          reduce using rule 29 (binop -> TIMES .)
+    ID              reduce using rule 29 (binop -> TIMES .)
+    LPAREN          reduce using rule 29 (binop -> TIMES .)
+    MINUS           reduce using rule 29 (binop -> TIMES .)
+    NOT             reduce using rule 29 (binop -> TIMES .)
+
+
+state 40
+
+    (27) binop -> PLUS .
+
+    NUMBER          reduce using rule 27 (binop -> PLUS .)
+    ID              reduce using rule 27 (binop -> PLUS .)
+    LPAREN          reduce using rule 27 (binop -> PLUS .)
+    MINUS           reduce using rule 27 (binop -> PLUS .)
+    NOT             reduce using rule 27 (binop -> PLUS .)
+
+
+state 41
+
+    (32) binop -> LESSEQUAL .
+
+    NUMBER          reduce using rule 32 (binop -> LESSEQUAL .)
+    ID              reduce using rule 32 (binop -> LESSEQUAL .)
+    LPAREN          reduce using rule 32 (binop -> LESSEQUAL .)
+    MINUS           reduce using rule 32 (binop -> LESSEQUAL .)
+    NOT             reduce using rule 32 (binop -> LESSEQUAL .)
+
+
+state 42
+
+    (36) binop -> NOTEQUAL .
+
+    NUMBER          reduce using rule 36 (binop -> NOTEQUAL .)
+    ID              reduce using rule 36 (binop -> NOTEQUAL .)
+    LPAREN          reduce using rule 36 (binop -> NOTEQUAL .)
+    MINUS           reduce using rule 36 (binop -> NOTEQUAL .)
+    NOT             reduce using rule 36 (binop -> NOTEQUAL .)
+
+
+state 43
+
+    (28) binop -> MINUS .
+
+    NUMBER          reduce using rule 28 (binop -> MINUS .)
+    ID              reduce using rule 28 (binop -> MINUS .)
+    LPAREN          reduce using rule 28 (binop -> MINUS .)
+    MINUS           reduce using rule 28 (binop -> MINUS .)
+    NOT             reduce using rule 28 (binop -> MINUS .)
+
+
+state 44
+
+    (33) binop -> GREATER .
+
+    NUMBER          reduce using rule 33 (binop -> GREATER .)
+    ID              reduce using rule 33 (binop -> GREATER .)
+    LPAREN          reduce using rule 33 (binop -> GREATER .)
+    MINUS           reduce using rule 33 (binop -> GREATER .)
+    NOT             reduce using rule 33 (binop -> GREATER .)
+
+
+state 45
+
+    (6) command -> ID ASSIGN exp .
+    (16) exp -> exp . binop exp
+    (27) binop -> . PLUS
+    (28) binop -> . MINUS
+    (29) binop -> . TIMES
+    (30) binop -> . DIVIDE
+    (31) binop -> . LESS
+    (32) binop -> . LESSEQUAL
+    (33) binop -> . GREATER
+    (34) binop -> . GREATEREQUAL
+    (35) binop -> . EQUAL
+    (36) binop -> . NOTEQUAL
+    (37) binop -> . AND
+    (38) binop -> . OR
+
+    SEMICOLON       reduce using rule 6 (command -> ID ASSIGN exp .)
+    ID              reduce using rule 6 (command -> ID ASSIGN exp .)
+    WHILE           reduce using rule 6 (command -> ID ASSIGN exp .)
+    IF              reduce using rule 6 (command -> ID ASSIGN exp .)
+    VAR             reduce using rule 6 (command -> ID ASSIGN exp .)
+    $end            reduce using rule 6 (command -> ID ASSIGN exp .)
+    END             reduce using rule 6 (command -> ID ASSIGN exp .)
+    ELSE            reduce using rule 6 (command -> ID ASSIGN exp .)
+    PLUS            shift and go to state 40
+    MINUS           shift and go to state 43
+    TIMES           shift and go to state 39
+    DIVIDE          shift and go to state 34
+    LESS            shift and go to state 36
+    LESSEQUAL       shift and go to state 41
+    GREATER         shift and go to state 44
+    GREATEREQUAL    shift and go to state 33
+    EQUAL           shift and go to state 37
+    NOTEQUAL        shift and go to state 42
+    AND             shift and go to state 31
+    OR              shift and go to state 38
+
+    binop                          shift and go to state 35
+
+state 46
+
+    (24) explist -> lexp . exp
+    (26) lexp -> lexp . exp COMMA
+    (13) exp -> . NUMBER
+    (14) exp -> . ID
+    (15) exp -> . functioncall
+    (16) exp -> . exp binop exp
+    (17) exp -> . unaryop exp
+    (18) exp -> . LPAREN exp RPAREN
+    (19) functioncall -> . ID LPAREN explist RPAREN
+    (39) unaryop -> . MINUS
+    (40) unaryop -> . NOT
+
+    NUMBER          shift and go to state 14
+    ID              shift and go to state 19
+    LPAREN          shift and go to state 12
+    MINUS           shift and go to state 15
+    NOT             shift and go to state 18
+
+    unaryop                        shift and go to state 13
+    functioncall                   shift and go to state 16
+    exp                            shift and go to state 54
+
+state 47
+
+    (19) functioncall -> ID LPAREN explist . RPAREN
+
+    RPAREN          shift and go to state 55
+
+
+state 48
+
+    (23) explist -> empty .
+    (25) lexp -> empty .
+
+    RPAREN          reduce using rule 23 (explist -> empty .)
+    NUMBER          reduce using rule 25 (lexp -> empty .)
+    ID              reduce using rule 25 (lexp -> empty .)
+    LPAREN          reduce using rule 25 (lexp -> empty .)
+    MINUS           reduce using rule 25 (lexp -> empty .)
+    NOT             reduce using rule 25 (lexp -> empty .)
+
+
+state 49
+
+    (10) command -> IF exp THEN . block elsestnt END
+    (1) block -> . blocklist
+    (2) blocklist -> . empty
+    (3) blocklist -> . blocklist command blockterminator
+    (41) empty -> .
+
+    ID              reduce using rule 41 (empty -> .)
+    WHILE           reduce using rule 41 (empty -> .)
+    IF              reduce using rule 41 (empty -> .)
+    VAR             reduce using rule 41 (empty -> .)
+    ELSE            reduce using rule 41 (empty -> .)
+    END             reduce using rule 41 (empty -> .)
+
+    blocklist                      shift and go to state 2
+    block                          shift and go to state 56
+    empty                          shift and go to state 1
+
+state 50
+
+    (22) expassign -> ASSIGN exp .
+    (16) exp -> exp . binop exp
+    (27) binop -> . PLUS
+    (28) binop -> . MINUS
+    (29) binop -> . TIMES
+    (30) binop -> . DIVIDE
+    (31) binop -> . LESS
+    (32) binop -> . LESSEQUAL
+    (33) binop -> . GREATER
+    (34) binop -> . GREATEREQUAL
+    (35) binop -> . EQUAL
+    (36) binop -> . NOTEQUAL
+    (37) binop -> . AND
+    (38) binop -> . OR
+
+    SEMICOLON       reduce using rule 22 (expassign -> ASSIGN exp .)
+    ID              reduce using rule 22 (expassign -> ASSIGN exp .)
+    WHILE           reduce using rule 22 (expassign -> ASSIGN exp .)
+    IF              reduce using rule 22 (expassign -> ASSIGN exp .)
+    VAR             reduce using rule 22 (expassign -> ASSIGN exp .)
+    $end            reduce using rule 22 (expassign -> ASSIGN exp .)
+    END             reduce using rule 22 (expassign -> ASSIGN exp .)
+    ELSE            reduce using rule 22 (expassign -> ASSIGN exp .)
+    PLUS            shift and go to state 40
+    MINUS           shift and go to state 43
+    TIMES           shift and go to state 39
+    DIVIDE          shift and go to state 34
+    LESS            shift and go to state 36
+    LESSEQUAL       shift and go to state 41
+    GREATER         shift and go to state 44
+    GREATEREQUAL    shift and go to state 33
+    EQUAL           shift and go to state 37
+    NOTEQUAL        shift and go to state 42
+    AND             shift and go to state 31
+    OR              shift and go to state 38
+
+    binop                          shift and go to state 35
+
+state 51
+
+    (18) exp -> LPAREN exp RPAREN .
+
+    PLUS            reduce using rule 18 (exp -> LPAREN exp RPAREN .)
+    MINUS           reduce using rule 18 (exp -> LPAREN exp RPAREN .)
+    TIMES           reduce using rule 18 (exp -> LPAREN exp RPAREN .)
+    DIVIDE          reduce using rule 18 (exp -> LPAREN exp RPAREN .)
+    LESS            reduce using rule 18 (exp -> LPAREN exp RPAREN .)
+    LESSEQUAL       reduce using rule 18 (exp -> LPAREN exp RPAREN .)
+    GREATER         reduce using rule 18 (exp -> LPAREN exp RPAREN .)
+    GREATEREQUAL    reduce using rule 18 (exp -> LPAREN exp RPAREN .)
+    EQUAL           reduce using rule 18 (exp -> LPAREN exp RPAREN .)
+    NOTEQUAL        reduce using rule 18 (exp -> LPAREN exp RPAREN .)
+    AND             reduce using rule 18 (exp -> LPAREN exp RPAREN .)
+    OR              reduce using rule 18 (exp -> LPAREN exp RPAREN .)
+    SEMICOLON       reduce using rule 18 (exp -> LPAREN exp RPAREN .)
+    ID              reduce using rule 18 (exp -> LPAREN exp RPAREN .)
+    WHILE           reduce using rule 18 (exp -> LPAREN exp RPAREN .)
+    IF              reduce using rule 18 (exp -> LPAREN exp RPAREN .)
+    VAR             reduce using rule 18 (exp -> LPAREN exp RPAREN .)
+    $end            reduce using rule 18 (exp -> LPAREN exp RPAREN .)
+    END             reduce using rule 18 (exp -> LPAREN exp RPAREN .)
+    ELSE            reduce using rule 18 (exp -> LPAREN exp RPAREN .)
+    THEN            reduce using rule 18 (exp -> LPAREN exp RPAREN .)
+    COMMA           reduce using rule 18 (exp -> LPAREN exp RPAREN .)
+    RPAREN          reduce using rule 18 (exp -> LPAREN exp RPAREN .)
+    DO              reduce using rule 18 (exp -> LPAREN exp RPAREN .)
+
+
+state 52
+
+    (9) command -> WHILE exp DO block . END
+
+    END             shift and go to state 57
+
+
+state 53
+
+    (16) exp -> exp binop exp .
+    (16) exp -> exp . binop exp
+    (27) binop -> . PLUS
+    (28) binop -> . MINUS
+    (29) binop -> . TIMES
+    (30) binop -> . DIVIDE
+    (31) binop -> . LESS
+    (32) binop -> . LESSEQUAL
+    (33) binop -> . GREATER
+    (34) binop -> . GREATEREQUAL
+    (35) binop -> . EQUAL
+    (36) binop -> . NOTEQUAL
+    (37) binop -> . AND
+    (38) binop -> . OR
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+  ! shift/reduce conflict for LESS resolved as shift
+  ! shift/reduce conflict for LESSEQUAL resolved as shift
+  ! shift/reduce conflict for GREATER resolved as shift
+  ! shift/reduce conflict for GREATEREQUAL resolved as shift
+  ! shift/reduce conflict for EQUAL resolved as shift
+  ! shift/reduce conflict for NOTEQUAL resolved as shift
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    SEMICOLON       reduce using rule 16 (exp -> exp binop exp .)
+    ID              reduce using rule 16 (exp -> exp binop exp .)
+    WHILE           reduce using rule 16 (exp -> exp binop exp .)
+    IF              reduce using rule 16 (exp -> exp binop exp .)
+    VAR             reduce using rule 16 (exp -> exp binop exp .)
+    $end            reduce using rule 16 (exp -> exp binop exp .)
+    END             reduce using rule 16 (exp -> exp binop exp .)
+    ELSE            reduce using rule 16 (exp -> exp binop exp .)
+    THEN            reduce using rule 16 (exp -> exp binop exp .)
+    COMMA           reduce using rule 16 (exp -> exp binop exp .)
+    RPAREN          reduce using rule 16 (exp -> exp binop exp .)
+    DO              reduce using rule 16 (exp -> exp binop exp .)
+    PLUS            shift and go to state 40
+    MINUS           shift and go to state 43
+    TIMES           shift and go to state 39
+    DIVIDE          shift and go to state 34
+    LESS            shift and go to state 36
+    LESSEQUAL       shift and go to state 41
+    GREATER         shift and go to state 44
+    GREATEREQUAL    shift and go to state 33
+    EQUAL           shift and go to state 37
+    NOTEQUAL        shift and go to state 42
+    AND             shift and go to state 31
+    OR              shift and go to state 38
+
+  ! PLUS            [ reduce using rule 16 (exp -> exp binop exp .) ]
+  ! MINUS           [ reduce using rule 16 (exp -> exp binop exp .) ]
+  ! TIMES           [ reduce using rule 16 (exp -> exp binop exp .) ]
+  ! DIVIDE          [ reduce using rule 16 (exp -> exp binop exp .) ]
+  ! LESS            [ reduce using rule 16 (exp -> exp binop exp .) ]
+  ! LESSEQUAL       [ reduce using rule 16 (exp -> exp binop exp .) ]
+  ! GREATER         [ reduce using rule 16 (exp -> exp binop exp .) ]
+  ! GREATEREQUAL    [ reduce using rule 16 (exp -> exp binop exp .) ]
+  ! EQUAL           [ reduce using rule 16 (exp -> exp binop exp .) ]
+  ! NOTEQUAL        [ reduce using rule 16 (exp -> exp binop exp .) ]
+  ! AND             [ reduce using rule 16 (exp -> exp binop exp .) ]
+  ! OR              [ reduce using rule 16 (exp -> exp binop exp .) ]
+
+    binop                          shift and go to state 35
+
+state 54
+
+    (24) explist -> lexp exp .
+    (26) lexp -> lexp exp . COMMA
+    (16) exp -> exp . binop exp
+    (27) binop -> . PLUS
+    (28) binop -> . MINUS
+    (29) binop -> . TIMES
+    (30) binop -> . DIVIDE
+    (31) binop -> . LESS
+    (32) binop -> . LESSEQUAL
+    (33) binop -> . GREATER
+    (34) binop -> . GREATEREQUAL
+    (35) binop -> . EQUAL
+    (36) binop -> . NOTEQUAL
+    (37) binop -> . AND
+    (38) binop -> . OR
+
+    RPAREN          reduce using rule 24 (explist -> lexp exp .)
+    COMMA           shift and go to state 58
+    PLUS            shift and go to state 40
+    MINUS           shift and go to state 43
+    TIMES           shift and go to state 39
+    DIVIDE          shift and go to state 34
+    LESS            shift and go to state 36
+    LESSEQUAL       shift and go to state 41
+    GREATER         shift and go to state 44
+    GREATEREQUAL    shift and go to state 33
+    EQUAL           shift and go to state 37
+    NOTEQUAL        shift and go to state 42
+    AND             shift and go to state 31
+    OR              shift and go to state 38
+
+    binop                          shift and go to state 35
+
+state 55
+
+    (19) functioncall -> ID LPAREN explist RPAREN .
+
+    RPAREN          reduce using rule 19 (functioncall -> ID LPAREN explist RPAREN .)
+    PLUS            reduce using rule 19 (functioncall -> ID LPAREN explist RPAREN .)
+    MINUS           reduce using rule 19 (functioncall -> ID LPAREN explist RPAREN .)
+    TIMES           reduce using rule 19 (functioncall -> ID LPAREN explist RPAREN .)
+    DIVIDE          reduce using rule 19 (functioncall -> ID LPAREN explist RPAREN .)
+    LESS            reduce using rule 19 (functioncall -> ID LPAREN explist RPAREN .)
+    LESSEQUAL       reduce using rule 19 (functioncall -> ID LPAREN explist RPAREN .)
+    GREATER         reduce using rule 19 (functioncall -> ID LPAREN explist RPAREN .)
+    GREATEREQUAL    reduce using rule 19 (functioncall -> ID LPAREN explist RPAREN .)
+    EQUAL           reduce using rule 19 (functioncall -> ID LPAREN explist RPAREN .)
+    NOTEQUAL        reduce using rule 19 (functioncall -> ID LPAREN explist RPAREN .)
+    AND             reduce using rule 19 (functioncall -> ID LPAREN explist RPAREN .)
+    OR              reduce using rule 19 (functioncall -> ID LPAREN explist RPAREN .)
+    DO              reduce using rule 19 (functioncall -> ID LPAREN explist RPAREN .)
+    COMMA           reduce using rule 19 (functioncall -> ID LPAREN explist RPAREN .)
+    THEN            reduce using rule 19 (functioncall -> ID LPAREN explist RPAREN .)
+    SEMICOLON       reduce using rule 19 (functioncall -> ID LPAREN explist RPAREN .)
+    ID              reduce using rule 19 (functioncall -> ID LPAREN explist RPAREN .)
+    WHILE           reduce using rule 19 (functioncall -> ID LPAREN explist RPAREN .)
+    IF              reduce using rule 19 (functioncall -> ID LPAREN explist RPAREN .)
+    VAR             reduce using rule 19 (functioncall -> ID LPAREN explist RPAREN .)
+    $end            reduce using rule 19 (functioncall -> ID LPAREN explist RPAREN .)
+    END             reduce using rule 19 (functioncall -> ID LPAREN explist RPAREN .)
+    ELSE            reduce using rule 19 (functioncall -> ID LPAREN explist RPAREN .)
+
+
+state 56
+
+    (10) command -> IF exp THEN block . elsestnt END
+    (11) elsestnt -> . empty
+    (12) elsestnt -> . ELSE block
+    (41) empty -> .
+
+    ELSE            shift and go to state 59
+    END             reduce using rule 41 (empty -> .)
+
+    empty                          shift and go to state 60
+    elsestnt                       shift and go to state 61
+
+state 57
+
+    (9) command -> WHILE exp DO block END .
+
+    SEMICOLON       reduce using rule 9 (command -> WHILE exp DO block END .)
+    ID              reduce using rule 9 (command -> WHILE exp DO block END .)
+    WHILE           reduce using rule 9 (command -> WHILE exp DO block END .)
+    IF              reduce using rule 9 (command -> WHILE exp DO block END .)
+    VAR             reduce using rule 9 (command -> WHILE exp DO block END .)
+    $end            reduce using rule 9 (command -> WHILE exp DO block END .)
+    END             reduce using rule 9 (command -> WHILE exp DO block END .)
+    ELSE            reduce using rule 9 (command -> WHILE exp DO block END .)
+
+
+state 58
+
+    (26) lexp -> lexp exp COMMA .
+
+    NUMBER          reduce using rule 26 (lexp -> lexp exp COMMA .)
+    ID              reduce using rule 26 (lexp -> lexp exp COMMA .)
+    LPAREN          reduce using rule 26 (lexp -> lexp exp COMMA .)
+    MINUS           reduce using rule 26 (lexp -> lexp exp COMMA .)
+    NOT             reduce using rule 26 (lexp -> lexp exp COMMA .)
+
+
+state 59
+
+    (12) elsestnt -> ELSE . block
+    (1) block -> . blocklist
+    (2) blocklist -> . empty
+    (3) blocklist -> . blocklist command blockterminator
+    (41) empty -> .
+
+    ID              reduce using rule 41 (empty -> .)
+    WHILE           reduce using rule 41 (empty -> .)
+    IF              reduce using rule 41 (empty -> .)
+    VAR             reduce using rule 41 (empty -> .)
+    END             reduce using rule 41 (empty -> .)
+
+    empty                          shift and go to state 1
+    blocklist                      shift and go to state 2
+    block                          shift and go to state 62
+
+state 60
+
+    (11) elsestnt -> empty .
+
+    END             reduce using rule 11 (elsestnt -> empty .)
+
+
+state 61
+
+    (10) command -> IF exp THEN block elsestnt . END
+
+    END             shift and go to state 63
+
+
+state 62
+
+    (12) elsestnt -> ELSE block .
+
+    END             reduce using rule 12 (elsestnt -> ELSE block .)
+
+
+state 63
+
+    (10) command -> IF exp THEN block elsestnt END .
+
+    SEMICOLON       reduce using rule 10 (command -> IF exp THEN block elsestnt END .)
+    ID              reduce using rule 10 (command -> IF exp THEN block elsestnt END .)
+    WHILE           reduce using rule 10 (command -> IF exp THEN block elsestnt END .)
+    IF              reduce using rule 10 (command -> IF exp THEN block elsestnt END .)
+    VAR             reduce using rule 10 (command -> IF exp THEN block elsestnt END .)
+    $end            reduce using rule 10 (command -> IF exp THEN block elsestnt END .)
+    END             reduce using rule 10 (command -> IF exp THEN block elsestnt END .)
+    ELSE            reduce using rule 10 (command -> IF exp THEN block elsestnt END .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for PLUS in state 30 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 30 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 30 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 30 resolved as shift
+WARNING: shift/reduce conflict for LESS in state 30 resolved as shift
+WARNING: shift/reduce conflict for LESSEQUAL in state 30 resolved as shift
+WARNING: shift/reduce conflict for GREATER in state 30 resolved as shift
+WARNING: shift/reduce conflict for GREATEREQUAL in state 30 resolved as shift
+WARNING: shift/reduce conflict for EQUAL in state 30 resolved as shift
+WARNING: shift/reduce conflict for NOTEQUAL in state 30 resolved as shift
+WARNING: shift/reduce conflict for AND in state 30 resolved as shift
+WARNING: shift/reduce conflict for OR in state 30 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 53 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 53 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 53 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 53 resolved as shift
+WARNING: shift/reduce conflict for LESS in state 53 resolved as shift
+WARNING: shift/reduce conflict for LESSEQUAL in state 53 resolved as shift
+WARNING: shift/reduce conflict for GREATER in state 53 resolved as shift
+WARNING: shift/reduce conflict for GREATEREQUAL in state 53 resolved as shift
+WARNING: shift/reduce conflict for EQUAL in state 53 resolved as shift
+WARNING: shift/reduce conflict for NOTEQUAL in state 53 resolved as shift
+WARNING: shift/reduce conflict for AND in state 53 resolved as shift
+WARNING: shift/reduce conflict for OR in state 53 resolved as shift

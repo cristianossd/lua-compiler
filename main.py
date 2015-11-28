@@ -1,5 +1,6 @@
 import lexer
 import parser
+import sys
 from sys import argv
 
 if __name__ == '__main__':
@@ -8,11 +9,20 @@ if __name__ == '__main__':
   code = f.read()
 
   # Building the lexer
-  lex = lexer.Lexer()
-  lex.build()
-  lex.lexer.input(code)
+  lexer.lexer.input(code)
+  while True:
+    tok = lexer.lexer.token()
+    if not tok:
+      break
+    print(tok.type, tok.value, tok.lineno, tok.lexpos)
 
-  # Building the parser
-  parser = parser.Parser()
-  parser.build()
-  parser.parse(lex.lexer)
+  if lexer.num_errors > 0:
+    print 'has errors'
+    sys.exit()
+  else:
+    print 'no errors'
+
+  print lexer.num_errors
+
+  result = parser.parser.parse(code)
+  print result

@@ -1,134 +1,75 @@
 import ply.yacc as yacc
+from lexer import tokens
 
-class Parser(object):
-
-  precedence = (
+precedence = (
     ('left', 'PLUS', 'MINUS'),
     ('left', 'TIMES', 'DIVIDE'),
-    ('left', 'CIRCUMFLEX'),
     ('right', 'UMINUS')
-  )
+)
 
-  def p_chunk(p):
-    '''chunk : {stat [SEMICOLON]} [laststat [SEMICOLON]]'''
+def p_block(p):
+    '''block : blocklist'''
     pass
 
-  def p_block(p):
-    '''block : chunk'''
+def p_blocklist(p):
+    '''blocklist : empty
+                 | blocklist command blockterminator'''
     pass
 
-  def p_stat(p):
-    '''stat : varlist ASSIGN explist
-            | functioncall
-            | DO block END
-            | WHILE exp DO block END
-            | REPEAT block UNTIL exp
-            | IF exp THEN block {ELSEIF exp THEN block} [ELSE block] END
-            | FOR ID ASSIGN exp COMMA exp [COMMA exp] DO block END
-            | FOR namelist IN explist DO block END
-            | FUNCTION funcname funcbody
-            | LOCAL FUNCTION ID funcbody
-            | LOCAL namelist [ASSIGN explist]'''
+def p_blockterminator(p):
+    '''blockterminator : empty
+                       | SEMICOLON'''
     pass
 
-  def p_laststat(p):
-    '''laststat : RETURN [explist]
-                | BREAK'''
+def p_command(p):
+    '''command : ID ASSIGN exp
+               | functioncall
+               | vardeclaration
+               | WHILE exp DO block END
+               | IF exp THEN block elsestnt END'''
     pass
 
-  def p_funcname(p):
-    '''funcname : ID {DOT ID} [TWODOTS ID]'''
+def p_elsestnt(p):
+    '''elsestnt : empty
+                | ELSE block'''
     pass
 
-  def p_varlist(p):
-    '''varlist : var {COMMA var}'''
-    pass
-
-  def p_var(p):
-    '''var : ID
-           | prefixexp LSQUARE exp RSQUARE
-           | prefixexp DOT ID'''
-    pass
-
-  def p_namelist(p):
-    '''namelist : ID {DOT ID}'''
-    pass
-
-  def p_explist(p):
-    '''explist : {exp COMMA} exp'''
-    pass
-
-  def p_exp(p):
-    '''exp : NIL
-           | FALSE
-           | TRUE
-           | NUMBER
-           | STRING
-           | THREEDOTS
-           | function
-           | prefixexp
-           | tableconstructor
+def p_exp(p):
+    '''exp : NUMBER
+           | ID
+           | functioncall
            | exp binop exp
-           | unop exp'''
+           | unaryop exp
+           | LPAREN exp RPAREN'''
     pass
 
-  def p_prefixexp(p):
-    '''prefixexp : var
-                 | functioncall
-                 | LPAREN exp RPAREN'''
+def p_functioncall(p):
+    '''functioncall : ID LPAREN explist RPAREN'''
     pass
 
-  def p_functioncall(p):
-    '''functioncall : prefixexp args
-                    | prefixexp COLON ID args'''
+def p_vardeclaration(p):
+    '''vardeclaration : VAR ID expassign'''
     pass
 
-  def p_args(p):
-    '''args : LPAREN [explist] RPAREN
-            | tableconstructor
-            | STRING'''
+def p_expassign(p):
+    '''expassign : empty
+                 | ASSIGN exp'''
     pass
 
-  def p_function(p):
-    '''function : FUNCTION funcbody'''
+def p_explist(p):
+    '''explist : empty
+               | lexp exp'''
+
+def p_lexp(p):
+    '''lexp : empty
+            | lexp exp COMMA'''
     pass
 
-  def p_funcbody(p):
-    '''funcbody : LPAREN [parlist] RPAREN block END'''
-    pass
-
-  def p_parlist(p):
-    '''parlist : namelist [COMMA THREEDOTS]
-               | THREEDOTS'''
-    pass
-
-  def p_tableconstructor(p):
-    '''tableconstructor : LCURLY [fieldlist] RCURLY'''
-    pass
-
-  def p_fieldlist(p):
-    '''fieldlist : field {fieldsep field} [fieldsep]'''
-    pass
-
-  def p_field(p):
-    '''field : LSQUARE exp RSQUARE ASSIGN exp
-             | ID ASSIGN exp
-             | exp'''
-    pass
-
-  def p_fieldsep(p):
-    '''fieldsep : COMMA
-                | SEMICOLON'''
-    pass
-
-  def p_binop(p):
+def p_binop(p):
     '''binop : PLUS
              | MINUS
              | TIMES
              | DIVIDE
-             | CIRCUMFLEX
-             | PERCENT
-             | TWODOTS
              | LESS
              | LESSEQUAL
              | GREATER
@@ -139,11 +80,17 @@ class Parser(object):
              | OR'''
     pass
 
-  def p_unop(p):
-    '''unop : MINUS
-            | NOT
-            | SHARP'''
+def p_unaryop(p):
+    '''unaryop : MINUS %prec UMINUS
+               | NOT'''
     pass
 
-  def build():
-    parser = yacc.yacc()
+def p_empty(p):
+    'empty : '
+    pass
+
+def p_error(p):
+    print("Syntax error in input")
+
+# Building parser
+parser = yacc.yacc()
