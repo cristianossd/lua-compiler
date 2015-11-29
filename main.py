@@ -14,7 +14,6 @@ if __name__ == '__main__':
     tok = lexer.lexer.token()
     if not tok:
       break
-    print(tok.type, tok.value, tok.lineno, tok.lexpos)
 
   if lexer.num_errors > 0:
     print 'has errors'
@@ -22,7 +21,8 @@ if __name__ == '__main__':
   else:
     print 'no errors'
 
-  print lexer.num_errors
+  # Preserve lines number
+  parser.num_lines = lexer.lexer.lineno - 1
 
-  result = parser.parser.parse(code)
+  result = parser.parser.parse(code, tracking = True)
   print result
