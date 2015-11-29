@@ -1,0 +1,20 @@
+var x
+var y
+var w
+
+if x < 0 then
+  x = -1
+  printf (x)
+else
+  while  x > 0 do
+    if y == 0 then
+      y = 1
+      x = x - 1
+    else
+      y = y + w
+      w = y - w
+    end
+  end
+end
+
+print (y)

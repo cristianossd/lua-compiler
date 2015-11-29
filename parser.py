@@ -73,7 +73,7 @@ def p_functioncall(p):
 
 def p_vardeclaration(p):
     '''vardeclaration : VAR ID expassign'''
-    p[0] = ('var', p[2], p[3])
+    p[0] = ('vardeclaration', p[2], p[3])
 
 def p_expassign(p):
     '''expassign : empty
