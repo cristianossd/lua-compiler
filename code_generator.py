@@ -18,11 +18,15 @@ class CodeGenerator:
 
   # MIPS instructions
   def mips_uminus_term():
-    self.mips_top_stack_on_a0()
+    self.mips_top_stack_on_a0(self)
     self.mips_out += "lw $t1, $a0\n"
     self.mips_out += "sub $a0, $a0, $a0\n"
     self.mips_out += "sub $a0, $a0, $t1\n"
     self.mips_push_a0_on_stack()
+
+  def mips_print_out_a0(self):
+    self.mips_out += "li $v0, 1\n"
+    self.mips_out += "syscall\n"
 
   def mips_top_stack_on_a0(self):
     self.mips_out += "lw $a0, 4($sp)\n"
@@ -58,14 +62,25 @@ class CodeGenerator:
   def mips_store_var(self, value):
     self.mips_out += "sw $a0, " + value + "\n"
 
+  def mips_var_in_a0(self, var):
+    self.mips_out += "lw $a0, " + var + "\n"
+
+  def mips_exit(self):
+    self.mips_out += "li $v0, 10\n"
+    self.mips_out += "syscall\n"
+
+  # end MIPS instructions
+
+  def line_break(self):
+    self.mips_out += "\n"
+
   # Accessing var table
   def get_var(self, var):
-    print var
     v = self.var_table.get(var)
-    print v
     if v == None:
       print "Semantic error: Trying to use undeclared variable '%s'" % var
       sys.exit()
+    return True
 
   # Making binary operation
   def make_bin_operation(self, op):
@@ -131,9 +146,17 @@ class CodeGenerator:
       else:
         self.function_call_statement(node[1])
     else:
-      value = node[1] if type(node[1]) is int else self.get_var(node[1])
-      self.mips_assign_a0(str(value))
-      self.mips_push_a0_on_stack()
+      if type(node[1]) is int:
+        value = node[1]
+        self.mips_assign_a0(str(value))
+        self.mips_push_a0_on_stack()
+        self.line_break()
+      else:
+        if self.get_var(node[1]):
+          var = node[1]
+          self.mips_var_in_a0(str(var))
+          self.mips_push_a0_on_stack()
+          self.line_break()
 
     if type(node[3]) is tuple:
       if node[3][0] == 'binary-operation':
@@ -143,12 +166,21 @@ class CodeGenerator:
       else:
         self.function_call_statement(node[3])
     else:
-      value = node[3] if type(node[3]) is int else self.get_var(node[3])
-      self.mips_assign_a0(str(value))
-      self.mips_push_a0_on_stack()
+      if type(node[3]) is int:
+        value = node[3]
+        self.mips_assign_a0(str(value))
+        self.mips_push_a0_on_stack()
+        self.line_break()
+      else:
+        if self.get_var(node[3]):
+          var = node[3]
+          self.mips_var_in_a0(str(var))
+          self.mips_push_a0_on_stack()
+          self.line_break()
 
     op = node[2][1]
     self.make_bin_operation(op)
+    self.line_break()
     return
 
   # Unary Operation
@@ -165,11 +197,22 @@ class CodeGenerator:
       else:
         self.function_call_statement(node[2])
     else:
-      term = node[2] if type(node[2]) is int else self.get_var(node[2])
-      self.mips_assign_a0(str(term))
-      self.mips_push_a0_on_stack()
+      if type(node[2]) is int:
+        term = node[2]
+        self.line_break()
+        self.mips_assign_a0(str(term))
+        self.mips_push_a0_on_stack()
+        self.line_break()
+      else:
+        if self.get_var(node[2]):
+          var = node[2]
+          self.line_break()
+          self.mips_var_in_a0(str(var))
+          self.mips_push_a0_on_stack()
+          self.line_break()
 
     self.make_unary_operation(op)
+    self.line_break()
     return
 
   # Assign
@@ -186,6 +229,24 @@ class CodeGenerator:
 
   # Function call
   def function_call_statement(self, node):
+    if node[1] == 'print':
+      op_node = node[2][2]
+      if type(op_node) is tuple:
+        if op_node[0] == 'binary-operation':
+          self.binary_operation_statement(op_node)
+        elif op_node[0] == 'unary-operation':
+          self.unary_operation_statement(op_node)
+      else:
+        if type(node[2][2]) is int:
+          term = node[2][2]
+          self.mips_assign_a0(str(term))
+        else:
+          if self.get_var(node[2][2]):
+            var = node[2][2]
+            self.mips_var_in_a0(str(var))
+
+      self.mips_print_out_a0()
+      self.line_break()
     return
   # end AST blocks
 
@@ -211,6 +272,7 @@ class CodeGenerator:
 
       self.var_table[index] = value
       self.mips_store_var(str(index))
+      self.line_break()
 
   def var_declaration_exception(self):
     if self.defining_var:
@@ -225,20 +287,21 @@ class CodeGenerator:
     self.mips_out += ".data\n"
     self.defining_var = True
     self.depth_search(self.ast)
+    self.mips_exit()
 
   def depth_search(self, ast):
-    if ast[0] is 'vardeclaration':
+    if ast[0] == 'vardeclaration':
       self.var_declaration_statement(ast)
-    elif ast[0] is 'assign':
+    elif ast[0] == 'assign':
       self.var_declaration_exception()
       self.assign_statement(ast)
-    elif ast[0] is 'while':
+    elif ast[0] == 'while':
       self.var_declaration_exception()
       self.while_statement(ast)
-    elif ast[0] is 'if':
+    elif ast[0] == 'if':
       self.var_declaration_exception()
       self.if_statement(ast)
-    elif ast[0] is 'function-call':
+    elif ast[0] == 'function-call':
       self.var_declaration_exception()
       self.function_call_statement(ast)
 

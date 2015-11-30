@@ -2,3 +2,4 @@ var a = 2 + (5+1)
 var b = 8
 
 a = 2
+print(3*3)
