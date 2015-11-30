@@ -31,5 +31,5 @@ if __name__ == '__main__':
   cg = CodeGenerator(result)
   cg.generate()
 
-  with open("mips.out", "w") as f_out:
+  with open(argv[2], "w") as f_out:
     f_out.write(cg.mips_out)

@@ -41,9 +41,9 @@ class CodeGenerator:
     self.mips_out += "addiu $sp, $sp 4\n"
 
   def mips_get_two_tmp(self):
-    self.mips_out += "lw $t1, 0($sp)\n"
+    self.mips_out += "lw $t1, 4($sp)\n"
     self.mips_out += "addiu $sp, $sp, 4\n"
-    self.mips_out += "lw $t2, 0($sp)\n"
+    self.mips_out += "lw $t2, 4($sp)\n"
     self.mips_out += "addiu $sp, $sp, 4\n"
 
   def mips_push_a0_on_stack(self):
@@ -217,6 +217,35 @@ class CodeGenerator:
 
   # Assign
   def assign_statement(self, node):
+    index = node[1]
+
+    if type(node[2]) is tuple:
+      if node[2][0] == 'binary-operation':
+        self.binary_operation_statement(node[2]) # must push the recursive return
+        self.mips_top_stack_on_a0()
+        value = 'unassigned'
+      elif node[2][0] == 'unary-operation':
+        self.unary_operation_statement(node[2]) # must push the recursive return
+        self.mips_top_stack_on_a0()
+        value = 'unassigned'
+      else:
+        self.function_call_statement(node[2])
+    else:
+      if type(node[2]) is int:
+        value = node[2]
+        self.mips_assign_a0(str(value))
+        self.mips_push_a0_on_stack()
+        self.line_break()
+      else:
+        if self.get_var(node[2]):
+          var = node[2]
+          self.mips_var_in_a0(str(var))
+          self.mips_push_a0_on_stack()
+          self.line_break()
+
+    self.var_table[index] = value
+    self.mips_store_var(str(index))
+    self.line_break()
     return
 
   # While
