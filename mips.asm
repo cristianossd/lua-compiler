@@ -1,15 +1,14 @@
 .data
-x: .word 0
 .text
 .globl main
 
 main:
 
-li $a0, 7
+li $a0, 2
 sw $a0, 0($sp)
 addiu $sp, $sp, -4
 
-li $a0, 5
+li $a0, 3
 sw $a0, 0($sp)
 addiu $sp, $sp, -4
 
@@ -21,11 +20,76 @@ add $a0, $t2, $t1
 sw $a0, 0($sp)
 addiu $sp, $sp, -4
 
-lw $a0, 4($sp)
+lw $t1, 4($sp)
 addiu $sp, $sp 4
-sw $a0, x
+sub $a0, $t1, $t1
+sub $a0, $a0, $t1
+sw $a0, 0($sp)
+addiu $sp, $sp, -4
 
-lw $a0, x
+lw $t1, 4($sp)
+addiu $sp, $sp 4
+sub $a0, $t1, $t1
+sub $a0, $a0, $t1
+sw $a0, 0($sp)
+addiu $sp, $sp, -4
+
+lw $t1, 4($sp)
+addiu $sp, $sp 4
+sub $a0, $t1, $t1
+sub $a0, $a0, $t1
+sw $a0, 0($sp)
+addiu $sp, $sp, -4
+
+lw $t1, 4($sp)
+addiu $sp, $sp 4
+sub $a0, $t1, $t1
+sub $a0, $a0, $t1
+sw $a0, 0($sp)
+addiu $sp, $sp, -4
+
+lw $t1, 4($sp)
+addiu $sp, $sp 4
+sub $a0, $t1, $t1
+sub $a0, $a0, $t1
+sw $a0, 0($sp)
+addiu $sp, $sp, -4
+
+lw $t1, 4($sp)
+addiu $sp, $sp 4
+sub $a0, $t1, $t1
+sub $a0, $a0, $t1
+sw $a0, 0($sp)
+addiu $sp, $sp, -4
+
+lw $t1, 4($sp)
+addiu $sp, $sp 4
+sub $a0, $t1, $t1
+sub $a0, $a0, $t1
+sw $a0, 0($sp)
+addiu $sp, $sp, -4
+
+lw $t1, 4($sp)
+addiu $sp, $sp 4
+sub $a0, $t1, $t1
+sub $a0, $a0, $t1
+sw $a0, 0($sp)
+addiu $sp, $sp, -4
+
+lw $t1, 4($sp)
+addiu $sp, $sp 4
+sub $a0, $t1, $t1
+sub $a0, $a0, $t1
+sw $a0, 0($sp)
+addiu $sp, $sp, -4
+
+lw $t1, 4($sp)
+addiu $sp, $sp 4
+sub $a0, $t1, $t1
+sub $a0, $a0, $t1
+sw $a0, 0($sp)
+addiu $sp, $sp, -4
+
 li $v0, 1
 syscall
 

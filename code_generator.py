@@ -65,6 +65,11 @@ class CodeGenerator:
   def mips_var_in_a0(self, var):
     self.mips_out += "lw $a0, " + var + "\n"
 
+  def mips_unary_op(self):
+    self.mips_out += "sub $a0, $t1, $t1\n"
+    self.mips_out += "sub $a0, $a0, $t1\n"
+    self.mips_push_a0_on_stack()
+
   def mips_exit(self):
     self.mips_out += "li $v0, 10\n"
     self.mips_out += "syscall\n"
@@ -117,6 +122,7 @@ class CodeGenerator:
   def make_unary_operation(self, op):
     if op == '-':
       self.mips_top_stack_on_t1()
+      self.mips_unary_op()
     elif op == 'NOT':
       return
 
@@ -188,7 +194,7 @@ class CodeGenerator:
     if self.defining_var is True:
       return
 
-    op = node[1]
+    op = node[1][1]
     if type(node[2]) is tuple:
       if node[2][0] == 'binary-operation':
         self.binary_operation_statement(node[2])
@@ -316,6 +322,8 @@ class CodeGenerator:
     self.mips_out += ".data\n"
     self.defining_var = True
     self.depth_search(self.ast)
+    if self.defining_var:
+      self.var_declaration_exception()
     self.mips_exit()
 
   def depth_search(self, ast):

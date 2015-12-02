@@ -132,4 +132,4 @@ def p_error(p):
     num_errors += 1
 
 # Building parser
-parser = yacc.yacc()
+parser = yacc.yacc(debug=True)
