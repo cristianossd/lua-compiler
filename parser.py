@@ -5,6 +5,9 @@ num_errors = 0
 num_lines = 0
 
 precedence = (
+	('left', 'AND', 'OR'),
+    ('left', 'EQUAL', 'NOTEQUAL'),
+    ('left', 'LESS', 'LESSEQUAL', 'GREATER', 'GREATEREQUAL'),
     ('left', 'PLUS', 'MINUS'),
     ('left', 'TIMES', 'DIVIDE'),
     ('right', 'UMINUS')
@@ -36,9 +39,9 @@ def p_command(p):
     if len(p) == 4:
         p[0] = ('assign', p[1], p[3])
     elif len(p) == 6:
-        p[0] = ('while', p[2], p[4])
+        p[0] = ('while', p[2], p[4], 'endwhile')
     elif len(p) == 7:
-        p[0] = ('if', p[2], p[4], p[5])
+        p[0] = ('if', p[2], p[4], p[5], 'endif')
     else:
         p[0] = p[1]
 
@@ -54,14 +57,25 @@ def p_exp(p):
     '''exp : NUMBER
            | ID
            | functioncall
-           | exp binop exp
+           | exp PLUS exp
+           | exp MINUS exp
+           | exp TIMES exp
+           | exp DIVIDE exp
+           | exp LESS exp
+           | exp LESSEQUAL exp
+           | exp GREATER exp
+           | exp GREATEREQUAL exp
+           | exp EQUAL exp
+           | exp NOTEQUAL exp
+           | exp AND exp
+           | exp OR exp
            | unaryop exp
            | LPAREN exp RPAREN'''
     if len(p) == 4:
         if p[1] == '(':
             p[0] = p[2]
         else:
-            p[0] = ('binary-operation', p[1], p[2], p[3])
+            p[0] = ('binary-operation', p[1], ('binary-operator', p[2]), p[3])
     elif len(p) == 3:
         p[0] = ('unary-operation', p[1], p[2])
     else:
@@ -98,21 +112,6 @@ def p_lexp(p):
         p[0] = p[1]
     else:
         p[0] = ('exp-seq', p[1], p[2])
-
-def p_binop(p):
-    '''binop : PLUS
-             | MINUS
-             | TIMES
-             | DIVIDE
-             | LESS
-             | LESSEQUAL
-             | GREATER
-             | GREATEREQUAL
-             | EQUAL
-             | NOTEQUAL
-             | AND
-             | OR'''
-    p[0] = ('binary-operator', p[1])
 
 def p_unaryop(p):
     '''unaryop : MINUS %prec UMINUS

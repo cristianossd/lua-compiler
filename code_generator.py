@@ -7,6 +7,15 @@ class CodeGenerator:
     self.defining_var = False
     self.var_assigns = []
     self.var_table = {}
+    self.defining_else = False
+    self.else_count = 0
+    self.else_max = 0
+    self.else_min = 0
+    self.while_count = 0
+    self.while_max = 0
+    self.while_min = 0
+    self.if_st = False
+    self.while_st = False
 
   def print_tree(self, tree, level = 1):
     print('-' * (level-1)) + ' ' + str(tree[0])
@@ -106,16 +115,50 @@ class CodeGenerator:
       self.mips_out += "div $a0, $t2, $t1\n"
       self.mips_push_a0_on_stack()
     elif op == '==':
+      self.mips_get_two_tmp()
+      self.mips_out += "bne $t1, $t2, else"+str(self.else_count)+"\n"
       return
     elif op == '~=':
+      self.mips_get_two_tmp()
+      self.mips_out += "beq $t1, $t2, else"+str(self.else_count)+"\n"
       return
-    elif op == '<=':
+    #If True
+    elif op == '<=' and self.if_st is True and self.while_st is False:
+      self.mips_get_two_tmp()
+      self.mips_out += "bgt $t1, $t2, else"+str(self.else_count)+"\n"
       return
-    elif op == '>=':
+    elif op == '>=' and self.if_st is True and self.while_st is False:
+      self.mips_get_two_tmp()
+      self.mips_out += "blt $t1, $t2, else"+str(self.else_count)+"\n"
       return
-    elif op == '<':
+    elif op == '<' and self.if_st is True and self.while_st is False:
+      self.mips_get_two_tmp()
+      self.mips_out += "bge $t1, $t2, else"+str(self.else_count)+"\n"
       return
-    elif op == '>':
+    elif op == '>' and self.if_st is True and self.while_st is False:
+      self.mips_get_two_tmp()
+      self.mips_out += "ble $t1, $t2, else"+str(self.else_count)+"\n"
+      return
+    #While True
+    elif op == '<=' and self.if_st is False and self.while_st is True:
+      self.mips_get_two_tmp()
+      self.mips_out += "blt $t1, $t2, endwhile"+str(self.while_count)+"\n"
+      self.enter_nested_while()
+      return
+    elif op == '>=' and self.if_st is False and self.while_st is True:
+      self.mips_get_two_tmp()
+      self.mips_out += "bgt $t1, $t2, endwhile"+str(self.while_count)+"\n"
+      self.enter_nested_while()
+      return
+    elif op == '<' and self.if_st is False and self.while_st is True:
+      self.mips_get_two_tmp()
+      self.mips_out += "ble $t1, $t2, endwhile"+str(self.while_count)+"\n"
+      self.enter_nested_while()
+      return
+    elif op == '>' and self.if_st is False and self.while_st is True:
+      self.mips_get_two_tmp()
+      self.mips_out += "bge $t1, $t2, endwhile"+str(self.while_count)+"\n"
+      self.enter_nested_while()
       return
 
   # Making unary operation
@@ -252,14 +295,71 @@ class CodeGenerator:
     self.var_table[index] = value
     self.mips_store_var(str(index))
     self.line_break()
+      
     return
 
   # While
   def while_statement(self, node):
+    self.mips_out += "while"+str(self.while_count)+":\n"
+    self.line_break()
+    if type(node[1]) is tuple:
+      self.if_st = False
+      self.while_st = True
+      self.binary_operation_statement(node[1])
     return
 
+  # EndWhile
+  def endwhile_statement(self):
+    self.leave_nested_while()
+    self.mips_out += "j while"+str(self.while_count)+"\n\n"
+    self.mips_out += "endwhile"+str(self.while_count)+":\n"
+    self.line_break()
+    self.check_min_while()
+    return
+
+  def enter_nested_while(self):
+    self.while_count += 1
+    if self.while_count > self.while_max:
+      self.while_max = self.while_count
+    return
+
+  def leave_nested_while(self):
+    self.while_count -= 1
+    return
+
+  def check_min_while(self):
+    if self.while_min == self.while_count:
+      self.while_count = self.while_max
+      self.while_min = self.while_max
+    return
+  
   # If
   def if_statement(self, node):
+    if type(node[1]) is tuple:
+      self.if_st = True
+      self.while_st = False
+      self.binary_operation_statement(node[1])
+    return
+
+  # Else
+  def else_statement(self, node):
+    self.defining_else = True
+    self.mips_out += "j else_end"+str(self.else_count)+"\n"
+    self.line_break()
+    self.mips_out += "else"+str(self.else_count)+":\n"
+    self.line_break()
+    return
+
+  # EndIf
+  def endif_statement(self):
+    if self.defining_else is True:
+      self.mips_out += "else_end"+str(self.else_count)+":\n"
+      self.line_break()
+      self.defining_else = False
+    else:
+      self.mips_out += "else"+str(self.else_count)+":\n"
+      self.line_break()
+    self.else_count += 1
     return
 
   # Function call
@@ -338,11 +438,18 @@ class CodeGenerator:
     elif ast[0] == 'if':
       self.var_declaration_exception()
       self.if_statement(ast)
+    elif ast[0] == 'else':
+      self.var_declaration_exception()
+      self.else_statement(ast)
     elif ast[0] == 'function-call':
       self.var_declaration_exception()
       self.function_call_statement(ast)
-
+    
     for node in ast[1:]:
       if type(node) == tuple:
         self.depth_search(node)
+      elif node == 'endif':
+        self.endif_statement()
+      elif node == 'endwhile':
+        self.endwhile_statement()
 
