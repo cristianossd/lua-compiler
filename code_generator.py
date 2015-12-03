@@ -7,7 +7,7 @@ class CodeGenerator:
     self.defining_var = False
     self.var_assigns = []
     self.var_table = {}
-    self.defining_else = False
+    self.defining_else = []
     self.else_count = 0
     self.else_max = 0
     self.else_min = 0
@@ -125,19 +125,19 @@ class CodeGenerator:
     #If True
     elif op == '<=' and self.if_st is True and self.while_st is False:
       self.mips_get_two_tmp()
-      self.mips_out += "bgt $t1, $t2, else"+str(self.else_count)+"\n"
+      self.mips_out += "bgt $t2, $t1, else"+str(self.else_count)+"\n"
       return
     elif op == '>=' and self.if_st is True and self.while_st is False:
       self.mips_get_two_tmp()
-      self.mips_out += "blt $t1, $t2, else"+str(self.else_count)+"\n"
+      self.mips_out += "blt $t2, $t1, else"+str(self.else_count)+"\n"
       return
     elif op == '<' and self.if_st is True and self.while_st is False:
       self.mips_get_two_tmp()
-      self.mips_out += "bge $t1, $t2, else"+str(self.else_count)+"\n"
+      self.mips_out += "bge $t2, $t1, else"+str(self.else_count)+"\n"
       return
     elif op == '>' and self.if_st is True and self.while_st is False:
       self.mips_get_two_tmp()
-      self.mips_out += "ble $t1, $t2, else"+str(self.else_count)+"\n"
+      self.mips_out += "ble $t2, $t1, else"+str(self.else_count)+"\n"
       return
     #While True
     elif op == '<=' and self.if_st is False and self.while_st is True:
@@ -351,14 +351,16 @@ class CodeGenerator:
   # If
   def if_statement(self, node):
     if type(node[1]) is tuple:
+      self.defining_else.append(False)
       self.if_st = True
       self.while_st = False
+      self.else_count += 1
       self.binary_operation_statement(node[1])
     return
 
   # Else
   def else_statement(self, node):
-    self.defining_else = True
+    self.defining_else[len(self.defining_else)-1] = True
     self.mips_out += "j else_end"+str(self.else_count)+"\n"
     self.line_break()
     self.mips_out += "else"+str(self.else_count)+":\n"
@@ -367,14 +369,14 @@ class CodeGenerator:
 
   # EndIf
   def endif_statement(self):
-    if self.defining_else is True:
+    if self.defining_else[len(self.defining_else)-1] is True:
       self.mips_out += "else_end"+str(self.else_count)+":\n"
       self.line_break()
-      self.defining_else = False
     else:
       self.mips_out += "else"+str(self.else_count)+":\n"
       self.line_break()
-    self.else_count += 1
+    self.defining_else.pop()
+    self.else_count -= 1
     return
 
   # Function call
