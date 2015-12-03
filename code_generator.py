@@ -160,13 +160,28 @@ class CodeGenerator:
       self.mips_out += "bge $t1, $t2, endwhile"+str(self.while_count)+"\n"
       self.enter_nested_while()
       return
+    elif op == 'or':
+      self.mips_get_two_tmp()
+      self.mips_out += "or $a0, $t1, $t2\n"
+      self.mips_out += "li $t1, 0\n"
+      self.mips_out += "beq $a0, $t1, else"+str(self.else_count)+"\n"
+      return
+    elif op == 'and':
+      self.mips_get_two_tmp()
+      self.mips_out += "and $a0, $t1, $t2\n"
+      self.mips_out += "li $t1, 0\n"
+      self.mips_out += "beq $a0, $t1, else"+str(self.else_count)+"\n"
+      return
 
   # Making unary operation
   def make_unary_operation(self, op):
     if op == '-':
       self.mips_top_stack_on_t1()
       self.mips_unary_op()
-    elif op == 'NOT':
+    elif op == 'not':
+      self.mips_top_stack_on_t1()
+      self.mips_out += "not $a0, $t1\n"
+      self.mips_push_a0_on_stack()
       return
 
   # AST blocks
@@ -186,7 +201,7 @@ class CodeGenerator:
   def binary_operation_statement(self, node):
     if self.defining_var is True:
       return
-
+    
     if type(node[1]) is tuple:
       if node[1][0] == 'binary-operation':
         self.binary_operation_statement(node[1])
@@ -237,7 +252,7 @@ class CodeGenerator:
     if self.defining_var is True:
       return
 
-    op = node[1][1]
+    op = node[1]
     if type(node[2]) is tuple:
       if node[2][0] == 'binary-operation':
         self.binary_operation_statement(node[2])

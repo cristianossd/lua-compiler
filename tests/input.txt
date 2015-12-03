@@ -1,11 +1,3 @@
-var x=1;
-var y=7;
-var z=3;
-var w=4;
-var a;
-var c;
-	
-a = (- 0 + 7 / ( 2 - z + 6 * x ) / - ( x * ( z - - 9 ) - 1 * - x - 7 + 5 * 1 ));
-c = w / 1 * - w;
-print(a);
-print(c);
+
+print(-1-3);
+

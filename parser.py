@@ -5,12 +5,12 @@ num_errors = 0
 num_lines = 0
 
 precedence = (
-	('left', 'AND', 'OR'),
-    ('left', 'EQUAL', 'NOTEQUAL'),
-    ('left', 'LESS', 'LESSEQUAL', 'GREATER', 'GREATEREQUAL'),
+	('nonassoc', 'AND', 'OR'),
+    ('nonassoc', 'EQUAL', 'NOTEQUAL'),
+    ('nonassoc', 'LESS', 'LESSEQUAL', 'GREATER', 'GREATEREQUAL'),
     ('left', 'PLUS', 'MINUS'),
     ('left', 'TIMES', 'DIVIDE'),
-    ('right', 'UMINUS')
+    ('right', 'UMINUS', 'NOT')
 )
 
 def p_block(p):
@@ -69,13 +69,18 @@ def p_exp(p):
            | exp NOTEQUAL exp
            | exp AND exp
            | exp OR exp
-           | unaryop exp
+           | NOT exp
+           | MINUS exp %prec UMINUS
            | LPAREN exp RPAREN'''
     if len(p) == 4:
         if p[1] == '(':
             p[0] = p[2]
+        elif p[1] == 'MINUS':
+            p[0] = ('unary-operation', p[1], p[2])
         else:
             p[0] = ('binary-operation', p[1], ('binary-operator', p[2]), p[3])
+    #elif len(p) == 3:
+    #    p[0] = ('unary-operation', p[1], p[2])
     elif len(p) == 3:
         p[0] = ('unary-operation', p[1], p[2])
     else:
@@ -113,10 +118,10 @@ def p_lexp(p):
     else:
         p[0] = ('exp-seq', p[1], p[2])
 
-def p_unaryop(p):
-    '''unaryop : MINUS %prec UMINUS
-               | NOT'''
-    p[0] = ('unary-operator', p[1])
+#def p_unaryop(p):
+#    '''unaryop : MINUS %prec UMINUS
+#               | NOT'''
+#    p[0] = ('unary-operator', p[1])
 
 def p_empty(p):
     'empty : '
