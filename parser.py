@@ -75,7 +75,7 @@ def p_exp(p):
     if len(p) == 4:
         if p[1] == '(':
             p[0] = p[2]
-        elif p[1] == 'MINUS':
+        elif p[1] == 'MINUS' or p[1] == 'NOT':
             p[0] = ('unary-operation', p[1], p[2])
         else:
             p[0] = ('binary-operation', p[1], ('binary-operator', p[2]), p[3])

@@ -10,7 +10,6 @@ class CodeGenerator:
     self.defining_else = []
     self.else_count = 0
     self.else_max = 0
-    self.else_min = 0
     self.while_count = 0
     self.while_max = 0
     self.while_min = 0
@@ -303,10 +302,12 @@ class CodeGenerator:
       else:
         if self.get_var(node[2]):
           var = node[2]
+          value = self.var_table.get(var)
           self.mips_var_in_a0(str(var))
           self.mips_push_a0_on_stack()
           self.line_break()
-
+    
+    #print node
     self.var_table[index] = value
     self.mips_store_var(str(index))
     self.line_break()
@@ -355,6 +356,8 @@ class CodeGenerator:
       self.if_st = True
       self.while_st = False
       self.else_count += 1
+      if self.else_count > self.else_max:
+        self.else_max = self.else_count
       self.binary_operation_statement(node[1])
     return
 
@@ -377,6 +380,12 @@ class CodeGenerator:
       self.line_break()
     self.defining_else.pop()
     self.else_count -= 1
+    self.check_else_count()
+    return
+  
+  def check_else_count(self):
+    if self.defining_else == []:
+      self.else_count = self.else_max
     return
 
   # Function call
