@@ -24,7 +24,7 @@ if __name__ == '__main__':
 
   # Building parser
   result = parser.parser.parse(code, lexer.lexer, tracking = True)
-  #print result
+
   if parser.num_errors > 0:
     sys.exit()
 

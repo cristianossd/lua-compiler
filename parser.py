@@ -5,12 +5,12 @@ num_errors = 0
 num_lines = 0
 
 precedence = (
-	('nonassoc', 'AND', 'OR'),
-    ('nonassoc', 'EQUAL', 'NOTEQUAL'),
-    ('nonassoc', 'LESS', 'LESSEQUAL', 'GREATER', 'GREATEREQUAL'),
-    ('left', 'PLUS', 'MINUS'),
-    ('left', 'TIMES', 'DIVIDE'),
-    ('right', 'UMINUS', 'NOT')
+  ('nonassoc', 'AND', 'OR'),
+  ('nonassoc', 'EQUAL', 'NOTEQUAL'),
+  ('nonassoc', 'LESS', 'LESSEQUAL', 'GREATER', 'GREATEREQUAL'),
+  ('left', 'PLUS', 'MINUS'),
+  ('left', 'TIMES', 'DIVIDE'),
+  ('right', 'UMINUS', 'NOT')
 )
 
 def p_block(p):
