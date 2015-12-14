@@ -7,7 +7,7 @@ We build a compiler for a simplified language based on [Lua](http://www.lua.org/
 First, you must run the front end stages (lexical and syntatic), semantic and code generation with just one line described below. The `input_file` is your source code.
 
 ```
-python main.py input_file output_file
+$ python main.py input_file output_file
 ```
 
 After that, you'll execute your `output_file` using SPIM simulator (see details [here](https://www.dropbox.com/s/ugc5oz8c5gpb9ro/SPIM_Manual.pdf)). Download the SPIM simulator in this [link](http://spimsimulator.sourceforge.net/).
